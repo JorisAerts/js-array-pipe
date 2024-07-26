@@ -1,11 +1,11 @@
 {
   "name": "array-pipe",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "JavaScript arrays in a streaming fashion",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:JorisAerts/js-array-pipe.git"
+    "url": "https://github.com/JorisAerts/js-array-pipe.git"
   },
   "author": {
     "name": "Joris Aerts",
