@@ -1,6 +1,7 @@
 {
   "name": "array-pipe",
   "version": "0.1.0",
+  "version": "0.2.0",
   "description": "JavaScript arrays in a streaming fashion",
   "author": {
     "name": "Joris Aerts",
