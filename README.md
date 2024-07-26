@@ -1,3 +1,5 @@
+[![Yarn CI](https://github.com/JorisAerts/js-array-pipe/actions/workflows/yarn.yml/badge.svg)](https://github.com/JorisAerts/js-array-pipe/actions/workflows/yarn.yml)
+
 # js-array-pipe
 
 Fully typed JavaScript arrays in a streaming fashion.
