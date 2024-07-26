@@ -1,6 +1,5 @@
 {
   "name": "array-pipe",
-  "version": "0.1.0",
   "version": "0.2.0",
   "description": "JavaScript arrays in a streaming fashion",
   "author": {
@@ -17,6 +16,9 @@
     "pipe",
     "pipeline",
     "chaining"
+  ],
+  "files": [
+    "dist/*"
   ],
   "type": "module",
   "main": "dist/array-pipe.js",
