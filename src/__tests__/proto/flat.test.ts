@@ -25,4 +25,5 @@ test(`flat(2)`, () => {
 
 test(`flat(Infinity)`, () => {
   testFlat(arr2, [0, 1, 2, 3, 4, 5], Infinity)
+  testFlat([[[[[[[[[[[1]]]]]]]]]]], [1], Infinity)
 })
