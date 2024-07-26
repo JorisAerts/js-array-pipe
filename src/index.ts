@@ -1,7 +1,7 @@
 import type { ArrayPipe } from './proxy'
 import { createProxy } from './proxy'
 
-export type { ArrayPipe }
+export type { ArrayPipe } from './proxy'
 
 /**
  * Creates a piped version of the given {@link Array}.
@@ -12,3 +12,4 @@ export type { ArrayPipe }
  * @author Joris Aerts
  */
 export const stream = <T>(array: T[]) => createProxy(array) as ArrayPipe<T>
+export const pipe = stream

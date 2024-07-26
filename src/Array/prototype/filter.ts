@@ -10,10 +10,10 @@ type MapCallBackFn<T> = Parameters<MapArray<T>>[0]
 export function filter<Type, ThisArg = any>(this: unknown, callbackfn: MapCallBackFn<Type>, thisArg?: ThisArg): Pipe<Type, Type> {
   return createPipe<Type, Type>({
     apply: (value: Type, ctx, next) => {
-      if (callbackfn.call(thisArg, value, ctx.index, ctx.array) != false) {
-        next(value)
-      } else {
+      if (!callbackfn.call(thisArg, value, ctx.index, ctx.array)) {
         ctx.index--
+      } else {
+        next(value)
       }
     },
   }) as Pipe<Type, Type>

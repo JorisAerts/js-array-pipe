@@ -13,10 +13,15 @@ export const compute = <T, R = unknown>(state: ArrayProxyState<T, R>) => {
   const result: R[] = []
   const context: ApplyContext<T> = { index: 0, array: state.value }
   const size = state.value.length
+  const undefinedIncrease = +!state.chain
   for (let i = 0; i < size; i++) {
     const item = state.value[i]
-    if (item !== undefined) state.chain!.apply(item, context, (value) => result.push(value))
-    context.index++
+    if (item !== undefined) {
+      state.chain!.apply(item, context, (value) => result.push(value))
+      context.index++
+    } else {
+      context.index += undefinedIncrease
+    }
   }
   return result
 }

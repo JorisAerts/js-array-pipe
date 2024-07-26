@@ -24,11 +24,13 @@ type MutatedArrayPrototype<Type> = {
   [Key in keyof ArrayProto<Type>]: ExtendedReturnType<ArrayProto<Type>[Key]>
 }
 
+type Brutal<Type> = MutatedArrayPrototype<Type>
+
 /**
  * An array that uses a pipe for chaining array operations.
  * This reduces the number of iterations required for computing the result.
  */
-export interface ArrayPipe<Type> extends MutatedArrayPrototype<Type> {
+export interface ArrayPipe<Type> extends Brutal<Type> {
   /**
    * Returns the computed underlying array.
    */
