@@ -32,24 +32,36 @@ export const computeUntil = <T, P>(state: ArrayProxyState<T>, predicate?: Predic
   let value: P | undefined = undefined
   const context: ApplyContext<T> = { index: 0, array: state.value }
   const size = state.value.length
-  const cb: Next<P> = (item): void => {
-    if (!predicate) return
-    if (predicate(item as P, context.index, context.array as unknown as P[])) {
-      value = item
-      abort = true
-    }
-  }
-  const process: Next<T> = state.chain ? (item: T) => state.chain!.apply(item, context, cb) : (cb as unknown as Next<T>)
+  const cb: Next<P> | undefined =
+    predicate &&
+    ((item): void => {
+      if (predicate!(item as P, context.index, context.array as unknown as P[])) {
+        value = item
+        abort = true
+      }
+    })
+
+  // reduce logic while looping
+  const process: Next<T> = state.chain //
+    ? cb
+      ? (item: T) => state.chain!.apply(item, context, cb)
+      : (item: T) => state.chain!.apply(item, context, dummy)
+    : cb
+      ? (cb as unknown as Next<T>)
+      : dummy
+
+  // final operations get the real index, chained ones don't
+  const undefinedIncrease = +!state.chain
   for (let i = 0; !abort && i < size; i++) {
     const item = state.value[i]
     if (item !== undefined) {
       process(item)
-    } else if (state.chain) {
-      // final operations get the real index, chained ones don't
-      continue
+      context.index++
+    } else {
+      context.index += undefinedIncrease
     }
-    context.index++
   }
   return value
-  //
 }
+
+function dummy() {}
