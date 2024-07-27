@@ -54,7 +54,7 @@ export const getProxy = <T>(proxy: T[] | ArrayPipe<T>) => proxy[ProxySymbol as u
 export function createProxy<T>(arr: T[] | ArrayPipe<T>) {
   // make sure we are dealing with an array, otherwise gtfo!
   if (!isArray(arr)) {
-    console.warn(`You can only use createProxy(…) on Arrays.`)
+    console.warn(`You can only create an ArrayPipe of an Array.`)
     return arr
   }
   const state: ArrayProxyState<T> = {
@@ -138,7 +138,7 @@ export function createProxyFromState<T>(state: ArrayProxyState<T>): ArrayPipe<T>
     /**
      * Delete a member of the array
      */
-    deleteProperty: (target: T[], p: number | string | symbol): boolean => isNumber(p) && delete computeValue(state)[p as unknown as number],
+    deleteProperty: (target: T[], p: number | string | symbol): boolean => delete computeValue(state)[p as unknown as number],
 
     /// ... others
     getPrototypeOf: (/* target: T[] */): object | null => Array.prototype,

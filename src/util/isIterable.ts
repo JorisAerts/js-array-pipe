@@ -6,4 +6,4 @@ export const isIterable = <
   Result = Obj extends { [Symbol.iterator]: () => Iterator<unknown> } ? true : false,
 >(
   obj: Obj
-): Result => (obj && typeof (obj as never)?.[Symbol.iterator] === 'function') as Result
+): Result => ((obj && typeof (obj as never)?.[Symbol.iterator] === 'function') ?? false) as Result

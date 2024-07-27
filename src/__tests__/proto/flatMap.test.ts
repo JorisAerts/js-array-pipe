@@ -18,6 +18,14 @@ test(`flatmap [[1], [2, 3]]`, () => {
   expect(Object.keys(next)).toStrictEqual(Object.keys(expected))
 })
 
+test(`flatmap empty`, () => {
+  const actual = [[], [], []]
+  expect(stream(actual).flatMap((i) => i)).toStrictEqual([])
+
+  const actual2 = [[], [1, 2], []]
+  expect(stream(actual2).flatMap((i) => i)).toStrictEqual([1, 2])
+})
+
 test(`flatmap callback index`, () => {
   const actual = [
     [1, 2],
