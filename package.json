@@ -1,6 +1,6 @@
 {
   "name": "array-pipe",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "JavaScript arrays in a streaming fashion",
   "license": "MIT",
   "repository": {
