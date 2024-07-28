@@ -6,7 +6,7 @@ import { isNumber } from '../util/isNumber'
 import { finalOperations, pipeOperations } from '../Array'
 import { isArray } from '../util/isIterable'
 
-export const ProxySymbol = Symbol('ArrayProxy')
+export const ProxySymbol = Symbol('[ArrayPipe]')
 
 /**
  * Modifies a function `(args) => Array<T>` to `(args) => ArrayPipe<T>`
@@ -79,9 +79,7 @@ const proxyProto = {
  */
 export function createPipeFromState<T>(state: ArrayProxyState<T>): ArrayPipe<T> {
   return new Proxy(state.value, {
-    /*
-     * Retrieve a value, the length, a prototype function or an Array symbol (such as Symbol.iterator)
-     */
+    // Retrieve a value, the length, a prototype function or an Array symbol (such as Symbol.iterator)
     get: (target, p) => {
       if (p === ProxySymbol) {
         return state
@@ -121,9 +119,7 @@ export function createPipeFromState<T>(state: ArrayProxyState<T>): ArrayPipe<T> 
       return computeValue(state)[p as keyof typeof target]
     },
 
-    /*
-     * Assign a value
-     */
+    // Assign a value
     set: (target, p: string | symbol | number, value) => {
       if (isNumber(p)) {
         computeValue(state)[p as unknown as number] = value
@@ -133,9 +129,7 @@ export function createPipeFromState<T>(state: ArrayProxyState<T>): ArrayPipe<T> 
       return true
     },
 
-    /*
-     * Delete a member of the array
-     */
+    // Delete a member of the array
     deleteProperty: (target: T[], p: number | string | symbol): boolean => delete computeValue(state)[p as unknown as number],
 
     /// ... others

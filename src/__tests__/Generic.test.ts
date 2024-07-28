@@ -9,6 +9,14 @@ describe('stream or pipe', () => {
     expect(Array.isArray(stream(arr))).toBe(true)
   })
 
+  test(`indexes`, () => {
+    expect([999][0]).toBe(999)
+    expect(stream([999])[0]).toBe(999)
+
+    expect([999]['0']).toBe(999)
+    expect(stream([999])['0']).toBe(999)
+  })
+
   test(`complex indexes`, () => {
     const test = <T extends Array<unknown> | ArrayPipe<unknown>>(t: T) =>
       t //
