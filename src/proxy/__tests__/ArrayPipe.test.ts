@@ -1,10 +1,10 @@
 import { describe, expect, test, vi } from 'vitest'
-import { createProxy, getProxy } from '../ArrayPipe'
+import { createPipe, getProxyState } from '../ArrayPipe'
 
 describe('ArrayPipe', () => {
   test('createProxy', () => {
     const arr = [1, 2, 3]
-    const proxy = createProxy(arr)
+    const proxy = createPipe(arr)
 
     // the proxy should be an array
     expect(proxy).toStrictEqual(arr)
@@ -16,22 +16,22 @@ describe('ArrayPipe', () => {
     expect(proxy).toStrictEqual(arr)
 
     // the "inner" proxy should be an object
-    expect(getProxy(proxy)).toBeTypeOf('object')
-    expect(getProxy(proxy)).not.toBe(getProxy(arr))
+    expect(getProxyState(proxy)).toBeTypeOf('object')
+    expect(getProxyState(proxy)).not.toBe(getProxyState(arr))
   })
 
   test('createProxy (non-array)', () => {
     const consoleMock = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
 
-    expect(createProxy(null as any)).toBeNull()
+    expect(createPipe(null as any)).toBeNull()
     expect(consoleMock).toHaveBeenCalledTimes(1)
     consoleMock.mockReset()
 
-    expect(createProxy('ok' as any)).toBeTypeOf('string')
+    expect(createPipe('ok' as any)).toBeTypeOf('string')
     expect(consoleMock).toHaveBeenCalledTimes(1)
     consoleMock.mockReset()
 
-    expect(createProxy({} as any)).toBeTypeOf('object')
+    expect(createPipe({} as any)).toBeTypeOf('object')
     expect(consoleMock).toHaveBeenCalledTimes(1)
     consoleMock.mockReset()
   })
@@ -40,7 +40,7 @@ describe('ArrayPipe', () => {
     const arr = [1, 2, 3]
     const expected = [2, 4, 6]
 
-    const proxy = createProxy(arr)
+    const proxy = createPipe(arr)
     const mapped = proxy.map((i) => i * 2)
 
     expect(mapped).toStrictEqual(expected)
@@ -50,7 +50,7 @@ describe('ArrayPipe', () => {
     const arr = [1, 2, 3]
     const expected = [2, 4, 6]
     const result: number[] = []
-    const proxy = createProxy(arr)
+    const proxy = createPipe(arr)
     proxy.map((i) => i * 2).forEach((i) => result.push(i))
 
     expect(result).toStrictEqual(expected)
@@ -58,7 +58,7 @@ describe('ArrayPipe', () => {
 
   test('set value', () => {
     const arr = [1, 2, 3, 4, 5, 6]
-    const result = createProxy(arr)
+    const result = createPipe(arr)
       .filter((i) => i % 2 === 0)
       .map((i) => i * 2)
 
@@ -70,7 +70,7 @@ describe('ArrayPipe', () => {
 
   test('delete value', () => {
     const arr = [1, 2, 3, 4, 5, 6]
-    const result = createProxy(arr)
+    const result = createPipe(arr)
       .filter((i) => i % 2 === 0)
       .map((i) => i * 2)
 
@@ -83,7 +83,7 @@ describe('ArrayPipe', () => {
   test('...spread', () => {
     const arr = [1, 2, 3, 4, 5, 6]
     const result = [
-      ...createProxy(arr)
+      ...createPipe(arr)
         .map((i) => i * 2)
         .map((i) => i / 2)
         .flat(),

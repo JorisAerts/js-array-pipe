@@ -45,13 +45,13 @@ export interface ArrayPipe<Type> extends Brutal<Type> {
  * Retrieve the inner-proxy instance of a given proxy, or undefined if it's not a Proxy
  * @param proxy the target proxy object
  */
-export const getProxy = <T>(proxy: T[] | ArrayPipe<T>) => proxy[ProxySymbol as unknown as keyof typeof proxy]
+export const getProxyState = <T>(proxy: T[] | ArrayPipe<T>) => proxy[ProxySymbol as unknown as keyof typeof proxy]
 
 /**
  * Create a Proxy from an array.
  * @param arr the target Array
  */
-export function createProxy<T>(arr: T[] | ArrayPipe<T>) {
+export function createPipe<T>(arr: T[] | ArrayPipe<T>) {
   // make sure we are dealing with an array, otherwise gtfo!
   if (!isArray(arr)) {
     console.warn(`You can only create an ArrayPipe of an Array.`)
@@ -62,7 +62,7 @@ export function createProxy<T>(arr: T[] | ArrayPipe<T>) {
     value: arr,
   }
 
-  return createProxyFromState(state)
+  return createPipeFromState(state)
 }
 
 /**
@@ -76,13 +76,13 @@ const proxyProto = {
 }
 
 /**
- * Create a Proxy from an array.
+ * Create an ArrayPipe from a given array.
  * @param state
  */
-export function createProxyFromState<T>(state: ArrayProxyState<T>): ArrayPipe<T> {
+export function createPipeFromState<T>(state: ArrayProxyState<T>): ArrayPipe<T> {
   return new Proxy(state.value, {
-    /**
-     * Retrieve a value
+    /*
+     * Retrieve a value, the length, a prototype function or an Array symbol (such as Symbol.iterator)
      */
     get: (target, p) => {
       if (p === ProxySymbol) {
@@ -108,7 +108,7 @@ export function createProxyFromState<T>(state: ArrayProxyState<T>): ArrayPipe<T>
             ...state,
             chain: state.chain?.andThen(pipe) ?? pipe,
           })
-          return createProxyFromState(newState)
+          return createPipeFromState(newState)
         }
       }
 
@@ -123,7 +123,7 @@ export function createProxyFromState<T>(state: ArrayProxyState<T>): ArrayPipe<T>
       return computeValue(state)[p as keyof typeof target]
     },
 
-    /**
+    /*
      * Assign a value
      */
     set: (target, p: string | symbol | number, value) => {
@@ -135,7 +135,7 @@ export function createProxyFromState<T>(state: ArrayProxyState<T>): ArrayPipe<T>
       return true
     },
 
-    /**
+    /*
      * Delete a member of the array
      */
     deleteProperty: (target: T[], p: number | string | symbol): boolean => delete computeValue(state)[p as unknown as number],

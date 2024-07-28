@@ -1,5 +1,5 @@
 import { expectTypeOf, test } from 'vitest'
-import type { ArrayPipe } from '../index'
+import type { ArrayPipe, CreateArrayPipe } from '../index'
 import { stream } from '../index'
 
 test('chaining types', () => {
@@ -16,4 +16,8 @@ test('chaining types', () => {
   expectTypeOf(chained).not.toBeArray()
   expectTypeOf(chained).toEqualTypeOf(null as unknown as ArrayPipe<unknown>)
   expectTypeOf(chained).toHaveProperty('unproxy')
+})
+
+test('exported types', () => {
+  expectTypeOf(stream).toMatchTypeOf<CreateArrayPipe<unknown>>()
 })
