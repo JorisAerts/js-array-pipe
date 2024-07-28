@@ -32,7 +32,7 @@ export const compute = <T, R = unknown>(state: ArrayProxyState<T, R>) => {
  * the computation part should be extracted an reused, so it can be chained with a final pipe or something,
  * handling forEach, find, ...
  */
-export const computeUntil = <T, P>(state: ArrayProxyState<T>, predicate?: Predicate<P>) => {
+export const computeUntil = <T, P>(state: ArrayProxyState<T>, predicate?: Predicate<P>): P | undefined => {
   let abort = false
   let value: P | undefined = undefined
   const context: ApplyContext<T> = { index: 0, array: state.value }
