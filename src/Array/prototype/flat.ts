@@ -2,6 +2,17 @@ import type { ApplyContext, Next } from '../../proxy/Pipe'
 import { createPipe, type Pipe } from '../../proxy/Pipe'
 import { isNumberOr } from '../../util/isNumber'
 import { isArray } from '../../util/isIterable'
+import type { ArrayPipe } from '../../proxy'
+
+export type FlatArrayPipe<
+  //
+  Arr,
+  Depth extends number,
+  FlatArr = FlatArray<Arr, Depth>,
+  Result = FlatArr extends Array<infer Element> //
+    ? ArrayPipe<Element>
+    : never,
+> = Result
 
 /**
  * Implementation for {@link Array#flat Array.prototype.flat(...)} on a single element
