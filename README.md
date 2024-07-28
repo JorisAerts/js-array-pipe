@@ -1,11 +1,16 @@
 [![Yarn CI](https://github.com/JorisAerts/js-array-pipe/actions/workflows/yarn.yml/badge.svg)](https://github.com/JorisAerts/js-array-pipe/actions/workflows/yarn.yml)
-[![npm version](https://badge.fury.io/js/array-pipe.svg)](https://badge.fury.io/js/array-pipe)
+[![npm version](https://badge.fury.io/js/array-pipe.svg)](https://www.npmjs.com/package/array-pipe)
 
 # js-array-pipe
 
-Fully typed JavaScript arrays in a streaming fashion.
-Operations on the array will be piped, so that only one iteration is needed when looping the array.
-This can help when dealing with very large arrays.
+`array-pipe` provides functionality that pipes array operations — when possible —
+to avoid unnecessary intermediate processing of the array, when chaining operations.
+
+JavaScript engines are really fast when performing these chained operations,
+but when an array becomes really large and may even need to be processed many times,
+then saving on iterations may become crucial to optimize cpu usage.
+
+## Installation
 
 To install array-pipe, run one of the following commands:
 
@@ -20,24 +25,24 @@ yarn add array-pipe
 pnpm add array-pipe
 ```
 
-#
+## Usage
 
-The purpose is to have a `stream(array)` which behaves exactly the same as `array`, with differed
-operations.
+Just wrap your array in a `stream()` and everything else stays the same.
+To access the underlying, computed array, call `.unproxy()`.
 
 ```TypeScript
 import {stream} from 'array-pipe'
 
-const proxiedArray = stream([])
+const arrayPipe = stream([])
     .map(...)
     .filter(...)
     .flatMap(...)
 
-const array = proxiedArray.unproxy()
+const array = arrayPipe.unproxy()
 ```
 
-Although `stream(...)` will return an `ArrayPipe<T>` object, it will still be treated as a normal
-array:
+Although `stream(...)` returns an `ArrayPipe<T>` object, it will still be treated
+as a native JavaScript array:
 
 ```TypeScript
 import {stream} from 'array-pipe'
@@ -48,5 +53,6 @@ assert(Array.isArray(stream([1, 2, 3])))
 
 ## Computation
 
-The "computation" of the resulting array, meaning resolving the pipeline,
-will happen automatically upon element access
+The array is computed — using the pipes — upon element access on the ArrayPipe.
+The result of this computation is then cached,
+so that later element access doesn't need additional calculation anymore.
