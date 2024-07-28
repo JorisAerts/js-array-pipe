@@ -1,4 +1,5 @@
 [![Yarn CI](https://github.com/JorisAerts/js-array-pipe/actions/workflows/yarn.yml/badge.svg)](https://github.com/JorisAerts/js-array-pipe/actions/workflows/yarn.yml)
+[![npm version](https://badge.fury.io/js/array-pipe.svg)](https://badge.fury.io/js/array-pipe)
 
 # js-array-pipe
 
