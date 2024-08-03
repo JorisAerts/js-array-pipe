@@ -30,3 +30,4 @@ updates:
         patterns:
           - 'vite*'
           - '@vitejs/*'
+          - '@vitest/*'
